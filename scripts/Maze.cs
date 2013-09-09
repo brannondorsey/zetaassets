@@ -7,14 +7,12 @@ public class Maze : MonoBehaviour {
 	public float size;
 	public int wallSize    = 5;
 	public float wallDepth = 0.3f;
-	public float halfWallDepth;
 
 	
 	public GameObject floor;
 	
 	void Awake(){
 		size = numbRows*wallSize;
-		halfWallDepth = wallDepth;
 		Debug.Log("The size is " + size);
 	}
 			
@@ -31,8 +29,8 @@ public class Maze : MonoBehaviour {
 		for(int x = 0; x < limit; x++){
 				int number = 1;
 				for(int z = 0; z < limit; z++){
-					if(x != limit-1) horizontalWalls[i] = initWall ("Horizontal Wall", letter+number.ToString(), wallSize, wallDepth, new Vector3((x*wallSize)+wallDepth*2+wallDepth/2, 0, (z*wallSize)-wallDepth/2-halfWallDepth/2), new Vector3(0, 0, 0));
-					if(z != limit-1) verticalWalls[i] = initWall ("Vertical Wall", letter+number.ToString(), wallSize, wallDepth, new Vector3((x*wallSize-wallSize/2)+wallDepth/2+halfWallDepth/2, 0, (z*wallSize+wallSize/2)+wallDepth/2+halfWallDepth/2), new Vector3(0, 90, 0));
+					if(x != limit-1) horizontalWalls[i] = initWall ("Horizontal Wall", letter+number.ToString(), wallSize, wallDepth, new Vector3(x*(wallSize-wallDepth), 0, z*(wallSize-wallDepth)), new Vector3(0, 0, 0));
+					if(z != limit-1) verticalWalls[i] = initWall ("Vertical Wall", letter+number.ToString(), wallSize, wallDepth, new Vector3(x*(wallSize-wallDepth)-(wallSize-wallDepth)/2, 0, z*(wallSize-wallDepth)+(wallSize-wallDepth)/2), new Vector3(0, 90, 0));
 					number++;
 					i++;
 				}
@@ -48,7 +46,7 @@ public class Maze : MonoBehaviour {
 	protected void CreateFloor(){
 		floor = GameObject.CreatePrimitive(PrimitiveType.Plane);
 		floor.transform.localScale = new Vector3(numbRows/2f, 1, (numbRows/2f));
-		floor.transform.position = new Vector3(size/2f-wallSize/2-wallDepth, -wallSize/2f, size/2f-wallDepth);
+		floor.transform.position = new Vector3(size/2f-wallSize/2, -wallSize/2f, size/2f-wallDepth);
 	}
 	
 	protected GameObject initWall(string name, string index, int wallSize, float wallDepth, Vector3 position, Vector3 rotation){
